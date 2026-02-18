@@ -3,7 +3,7 @@ package com.example.frontend
 import android.app.*
 import android.app.usage.*
 import android.content.Context
-import android.content.Intent   // ✅ THIS WAS MISSING
+import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
@@ -19,6 +19,8 @@ class UsageMonitorService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+
+        Log.d("INTENTRA", "🚀 Service CREATED")
 
         usm = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         createNotificationChannel()
@@ -40,10 +42,18 @@ class UsageMonitorService : Service() {
             startForeground(1, notification)
         }
 
+        Log.d("INTENTRA", "📡 Foreground service started")
+
         monitor()
     }
 
+    /**
+     * STEP 1
+     * Background loop runs every 2 seconds
+     */
     private fun monitor() {
+        Log.d("INTENTRA", "🧠 Monitor loop started")
+
         Thread {
             while (true) {
                 detect()
@@ -52,6 +62,10 @@ class UsageMonitorService : Service() {
         }.start()
     }
 
+    /**
+     * STEP 2
+     * Detect which app moved to foreground
+     */
     private fun detect() {
         val end = System.currentTimeMillis()
         val start = end - 5000
@@ -67,15 +81,27 @@ class UsageMonitorService : Service() {
             }
         }
 
+        // STEP 3: New app detected
         if (current != null && current != lastPkg && current != packageName) {
             lastPkg = current
-            val intentType = classify(current)
-            saveLog(current, intentType, end)
 
-            Log.d("INTENTRA", "$current | $intentType | $end")
+            Log.d("INTENTRA", "📱 DETECTED APP → $current")
+
+            val intentType = classify(current)
+
+            Log.d(
+                "INTENTRA",
+                "🧠 CLASSIFIED → $current as $intentType"
+            )
+
+            saveLog(current, intentType, end)
         }
     }
 
+    /**
+     * STEP 4
+     * Decide intent type
+     */
     private fun classify(pkg: String): String =
         when (pkg) {
             "com.whatsapp",
@@ -88,17 +114,30 @@ class UsageMonitorService : Service() {
             else -> "NEUTRAL"
         }
 
+    /**
+     * STEP 5
+     * Store locally for Flutter to sync later
+     */
     private fun saveLog(pkg: String, intent: String, time: Long) {
-        val prefs = getSharedPreferences("intentra_logs", MODE_PRIVATE)
+        val isoTime = java.time.Instant
+            .ofEpochMilli(time)
+            .toString()
+
+        val prefs = getSharedPreferences("usage_queue", MODE_PRIVATE)
         val arr = JSONArray(prefs.getString("logs", "[]"))
 
         val obj = JSONObject()
         obj.put("package", pkg)
         obj.put("intent", intent)
-        obj.put("timestamp", time)
+        obj.put("timestamp", isoTime)
 
         arr.put(obj)
         prefs.edit().putString("logs", arr.toString()).apply()
+
+        Log.d(
+            "INTENTRA",
+            "💾 STORED LOCALLY → $pkg | $intent | $isoTime"
+        )
     }
 
     private fun createNotificationChannel() {
@@ -113,6 +152,5 @@ class UsageMonitorService : Service() {
         }
     }
 
-    // ✅ REQUIRED for Service
     override fun onBind(intent: Intent?): IBinder? = null
 }
