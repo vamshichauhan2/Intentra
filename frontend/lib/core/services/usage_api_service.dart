@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class UsageApiService {
   static const String baseUrl =
-      'http://127.0.0.1:8000/api/usage/';
+    'http://172.50.6.190:8000/api/usage/';
 
   static Future<void> sendUsage({
     required String packageName,

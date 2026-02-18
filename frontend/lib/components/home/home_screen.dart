@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
       appBar:AppBar(title:const UserName(),),
       drawer: const AppDrawer(),
       body: const Center(
-        child: IntentCard(),
+        child:  IntentraDashboard (),
       ),
     );
   }
