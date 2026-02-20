@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'apps.features.apps.FeaturesConfig',
 ]
 
+
 MIDDLEWARE = [
      'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
