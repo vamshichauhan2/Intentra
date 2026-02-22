@@ -8,6 +8,7 @@ import '../components/Intent/Intent_screen.dart';
 import '../components/History/TimeLine_Screen.dart';
 import '../components/AuthScreen/authScreen.dart';
 import '../components/AuthScreen/signup_page.dart';
+import '../components/MyCoach/My_Coach.dart';
 // import others later
 
 class MyApp extends StatelessWidget {
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.focus:(_) => const FocusScreen(),
         AppRoutes.login:(_)=>const AuthScreen(),
         AppRoutes.signup:(_)=>const SignUpScreen(),
+        AppRoutes.myCoach:(_)=>const MyCoach(),
       }
     );
   }

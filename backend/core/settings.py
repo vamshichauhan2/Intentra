@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     #note this must be done api
     'apps.accounts.apps.AccountsConfig',
     'apps.features.apps.FeaturesConfig',
+    'apps.todos.apps.TodosConfig',
 ]
 
 
