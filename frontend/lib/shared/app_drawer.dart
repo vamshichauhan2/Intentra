@@ -52,6 +52,11 @@ class AppDrawer extends StatelessWidget {
               title:Text("Profile"),
               onTap: () => _go(context, AppRoutes.profile),
             ),
+             ListTile(
+              leading:Icon(Icons.person),
+              title:Text("My Coach"),
+              onTap: () => _go(context, AppRoutes.myCoach),
+            ),
             ListTile(
               leading: Icon(Icons.settings),
               title: Text('Settings'),

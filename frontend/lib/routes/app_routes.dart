@@ -1,3 +1,5 @@
+import 'package:frontend/components/MyCoach/My_Coach.dart';
+
 class AppRoutes {
   static const home = '/';
   static const myIntents = '/my-intents';
@@ -7,4 +9,5 @@ class AppRoutes {
   static const settings = '/settings';
   static const login='/login';
   static const signup='/signup';
+  static const myCoach='/mycoach';
 }
